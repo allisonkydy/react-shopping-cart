@@ -13,27 +13,21 @@ import { CartContext } from './contexts/CartContext';
 
 function App() {
 	const [products] = useState(data);
-	const [cart, setCart] = useState([]);
+	const [cart, setCart] = useState(() => {
+		const item = localStorage.getItem('localCart');
+		return item ? JSON.parse(item) : [];
+	});
 
 	useEffect(() => {
-		let counter = 0;
-		let itemArray = [];
-		while(localStorage.key(counter) !== null) {
-			const item = JSON.parse(localStorage.getItem(localStorage.key(counter)));
-			itemArray.push(item);
-			counter += 1;
-		}
-		setCart(itemArray)
-	}, [])
+		localStorage.setItem('localCart', JSON.stringify(cart));
+	}, [cart])
 
 	const addItem = item => {
 		setCart([...cart, item]);
-		localStorage.setItem(item.id, JSON.stringify(item));
 	};
 
 	const removeItem = (id) => {
 		setCart([...cart].filter(item => item.id !== id));
-		localStorage.removeItem(id);
 	}
 
 	return (
