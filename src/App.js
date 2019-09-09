@@ -17,10 +17,13 @@ function App() {
 
 	const addItem = item => {
 		setCart([...cart, item]);
+		localStorage.setItem(item.id, JSON.stringify(item));
 	};
+
 
 	const removeItem = (id) => {
 		setCart([...cart].filter(item => item.id !== id));
+		localStorage.removeItem(id);
 	}
 
 	return (
